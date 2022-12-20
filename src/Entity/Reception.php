@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+
 use App\Repository\ReceptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReceptionRepository::class)]
-#[ApiResource]
+
 class Reception
 {
     #[ORM\Id]

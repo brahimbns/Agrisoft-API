@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CenterRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CenterRepository::class)]
-#[ApiResource]
+
 class Center
 {
     #[ORM\Id]
@@ -35,9 +35,9 @@ class Center
     #[ORM\Column(length: 255)]
     private ?string $rib = null;
 
-    #[ORM\ManyToOne(inversedBy: 'centers')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user_id = null;
+//    #[ORM\ManyToOne(inversedBy: 'centers')]
+//    #[ORM\JoinColumn(nullable: false)]
+//    private ?User $user_id = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -51,9 +51,13 @@ class Center
     #[ORM\OneToMany(mappedBy: 'center_id', targetEntity: Reception::class)]
     private Collection $receptions;
 
+    #[ORM\OneToMany(mappedBy: 'center_id', targetEntity: UserCenter::class, orphanRemoval: true)]
+    private Collection $userCenters;
+
     public function __construct()
     {
         $this->receptions = new ArrayCollection();
+        $this->userCenters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -133,48 +137,48 @@ class Center
         return $this;
     }
 
-    public function getUserId(): ?User
-    {
-        return $this->user_id;
-    }
+//    public function getUserId(): ?User
+//    {
+//        return $this->user_id;
+//    }
 
-    public function setUserId(?User $user_id): self
-    {
-        $this->user_id = $user_id;
+//    public function setUserId(?User $user_id): self
+//    {
+//        $this->user_id = $user_id;
+//
+//        return $this;
+//    }
 
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(DateTimeImmutable $created_at): self
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
+    public function setUpdatedAt(?DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
 
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTimeImmutable
+    public function getDeletedAt(): ?DateTimeImmutable
     {
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(?\DateTimeImmutable $deleted_at): self
+    public function setDeletedAt(?DateTimeImmutable $deleted_at): self
     {
         $this->deleted_at = $deleted_at;
 
@@ -205,6 +209,36 @@ class Center
             // set the owning side to null (unless already changed)
             if ($reception->getCenterId() === $this) {
                 $reception->setCenterId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserCenter>
+     */
+    public function getUserCenters(): Collection
+    {
+        return $this->userCenters;
+    }
+
+    public function addUserCenter(UserCenter $userCenter): self
+    {
+        if (!$this->userCenters->contains($userCenter)) {
+            $this->userCenters->add($userCenter);
+            $userCenter->setCenterId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserCenter(UserCenter $userCenter): self
+    {
+        if ($this->userCenters->removeElement($userCenter)) {
+            // set the owning side to null (unless already changed)
+            if ($userCenter->getCenterId() === $this) {
+                $userCenter->setCenterId(null);
             }
         }
 

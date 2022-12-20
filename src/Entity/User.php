@@ -2,12 +2,10 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -15,36 +13,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ApiResource(
-//    operations: [],
-    normalizationContext: ['groups' => ['read']]
-)]
-#[UniqueEntity(fields: "username")]
-#[UniqueEntity(fields: "email")]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('read')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('read')]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "username no blank")]
     #[Assert\Length(min: 6)]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('read')]
-    #[Assert\NotBlank]
-    #[Assert\Email]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
-//    #[Assert\Regex(pattern:"" ,message: "maj + min")]
     private ?string $password = null;
 
     #[Assert\NotBlank]
@@ -52,13 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $retypedPassword = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('read')]
-    #[Assert\NotBlank]
     private ?string $Firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('read')]
-    #[Assert\NotBlank]
     private ?string $Lastname = null;
 
     #[ORM\Column(options: ['default'=>'CURRENT_TIMESTAMP'])]
@@ -70,16 +51,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Center::class)]
-    private Collection $centers;
+//    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Center::class)]
+//    private Collection $centers;
 
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Reception::class)]
     private Collection $receptions;
 
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: UserCenter::class, orphanRemoval: true)]
+    private Collection $userCenters;
+
     public function __construct()
     {
-        $this->centers = new ArrayCollection();
+//        $this->centers = new ArrayCollection();
         $this->receptions = new ArrayCollection();
+        $this->userCenters = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable("now");
     }
 
     public function getId(): ?int
@@ -135,7 +121,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        // TODO: Implement getUserIdentifier() method.
+        return $this->username;
     }
 
     public function getRetypedPassword(): ?string
@@ -208,35 +194,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Center>
-     */
-    public function getCenters(): Collection
-    {
-        return $this->centers;
-    }
+//    /**
+//     * @return Collection<int, Center>
+//     */
+//    public function getCenters(): Collection
+//    {
+//        return $this->centers;
+//    }
 
-    public function addCenter(Center $center): self
-    {
-        if (!$this->centers->contains($center)) {
-            $this->centers->add($center);
-            $center->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCenter(Center $center): self
-    {
-        if ($this->centers->removeElement($center)) {
-            // set the owning side to null (unless already changed)
-            if ($center->getUserId() === $this) {
-                $center->setUserId(null);
-            }
-        }
-
-        return $this;
-    }
+//    public function addCenter(Center $center): self
+//    {
+//        if (!$this->centers->contains($center)) {
+//            $this->centers->add($center);
+//            $center->setUserId($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeCenter(Center $center): self
+//    {
+//        if ($this->centers->removeElement($center)) {
+//            // set the owning side to null (unless already changed)
+//            if ($center->getUserId() === $this) {
+//                $center->setUserId(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 
     /**
      * @return Collection<int, Reception>
@@ -262,6 +248,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($reception->getUserId() === $this) {
                 $reception->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserCenter>
+     */
+    public function getUserCenters(): Collection
+    {
+        return $this->userCenters;
+    }
+
+    public function addUserCenter(UserCenter $userCenter): self
+    {
+        if (!$this->userCenters->contains($userCenter)) {
+            $this->userCenters->add($userCenter);
+            $userCenter->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserCenter(UserCenter $userCenter): self
+    {
+        if ($this->userCenters->removeElement($userCenter)) {
+            // set the owning side to null (unless already changed)
+            if ($userCenter->getUserId() === $this) {
+                $userCenter->setUserId(null);
             }
         }
 

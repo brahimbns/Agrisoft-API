@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+
 use App\Repository\AnalyseRequestReceptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnalyseRequestReceptionRepository::class)]
-#[ApiResource]
+
 class AnalyseRequestReception
 {
     #[ORM\Id]

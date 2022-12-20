@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AnalyseRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnalyseRepository::class)]
 #[ORM\Table(name: '`analyse`')]
-#[ApiResource]
+
 class Analyse
 {
     #[ORM\Id]
