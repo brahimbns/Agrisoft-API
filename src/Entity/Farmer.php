@@ -7,6 +7,8 @@ use App\Repository\FarmerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FarmerRepository::class)]
 
@@ -18,21 +20,33 @@ class Farmer
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Groups(["Farmer"])]
     private ?string $code_farmer = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Groups(["Farmer"])]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Groups(["Farmer"])]
     private ?string $last_name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Groups(["Farmer"])]
     private ?string $bank = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Groups(["Farmer"])]
     private ?string $rib = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Groups(["Farmer"])]
     private ?string $phone = null;
 
     #[ORM\Column]
@@ -54,6 +68,7 @@ class Farmer
     {
         $this->credits = new ArrayCollection();
         $this->receptions = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable("now");
     }
 
     public function getId(): ?int

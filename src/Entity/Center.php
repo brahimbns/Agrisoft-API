@@ -7,6 +7,8 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CenterRepository::class)]
 
@@ -15,24 +17,37 @@ class Center
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["User","Center"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Groups(["User","Center"])]
     private ?string $code_center = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Groups(["User","Center"])]
     private ?string $label = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank]
+    #[Groups(["User","Center"])]
     private ?float $capacity = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Groups(["User","Center"])]
     private ?string $governate = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Groups(["User","Center"])]
     private ?string $bank = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Groups(["User","Center"])]
     private ?string $rib = null;
 
 //    #[ORM\ManyToOne(inversedBy: 'centers')]
@@ -51,13 +66,15 @@ class Center
     #[ORM\OneToMany(mappedBy: 'center_id', targetEntity: Reception::class)]
     private Collection $receptions;
 
-    #[ORM\OneToMany(mappedBy: 'center_id', targetEntity: UserCenter::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'center_id', targetEntity: UserCenter::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Groups(["Center"])]
     private Collection $userCenters;
 
     public function __construct()
     {
         $this->receptions = new ArrayCollection();
         $this->userCenters = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable("now");
     }
 
     public function getId(): ?int

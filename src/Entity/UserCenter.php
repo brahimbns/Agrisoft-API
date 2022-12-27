@@ -4,7 +4,9 @@ namespace App\Entity;
 
 
 use App\Repository\UserCenterRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserCenterRepository::class)]
 
@@ -17,14 +19,21 @@ class UserCenter
 
     #[ORM\ManyToOne(inversedBy: 'userCenters')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["Center"])]
     private ?User $user_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'userCenters')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["User"])]
     private ?Center $center_id = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable("now");
+    }
 
     public function getId(): ?int
     {

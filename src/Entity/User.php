@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -19,15 +20,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["User","Center"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "username no blank")]
     #[Assert\Length(min: 6)]
+    #[Groups(["User","Center"])]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["User","Center"])]
     private ?string $email = null;
+
+    #[ORM\Column(type: Types::JSON)]
+    private array $roles = [];
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
@@ -37,9 +44,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $retypedPassword = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["User","Center"])]
     private ?string $Firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["User","Center"])]
     private ?string $Lastname = null;
 
     #[ORM\Column(options: ['default'=>'CURRENT_TIMESTAMP'])]
@@ -58,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $receptions;
 
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: UserCenter::class, orphanRemoval: true)]
+    #[Groups(["User"])]
     private Collection $userCenters;
 
     public function __construct()
@@ -97,6 +107,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
+    }
+
     public function getPassword(): ?string
     {
         return $this->password;
@@ -109,10 +135,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRoles(): array
-    {
-        return ['ROLE_USER'];
-    }
+//    public function getRoles(): array
+//    {
+//        return ['ROLE_USER'];
+//    }
 
     public function eraseCredentials()
     {

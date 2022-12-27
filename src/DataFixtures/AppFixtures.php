@@ -32,6 +32,7 @@ class AppFixtures extends Fixture
 
         $user->setUsername('brahim');
         $user->setEmail('test12@brahim.com');
+        $user->setRoles(["ROLE_USER"]);
         $user->setPassword($this->passwordHasher->hashPassword(
             $user,
             'secret123$'
@@ -44,5 +45,21 @@ class AppFixtures extends Fixture
 
         $manager->flush();
 
+        $userAdmin = new User();
+
+        $userAdmin->setUsername('brahimAdmin');
+        $userAdmin->setEmail('brahimAdmin@brahim.com');
+        $userAdmin->setRoles(["ROLE_ADMIN"]);
+        $userAdmin->setPassword($this->passwordHasher->hashPassword(
+            $userAdmin,
+            'secret123$'
+        ));
+        $userAdmin->setRetypedPassword('secret123$');
+        $userAdmin->setFirstname('brahimAdmin');
+        $userAdmin->setLastname('bns');
+        $manager->persist($userAdmin);
+        $manager->persist($userAdmin);
+
+        $manager->flush();
     }
 }
