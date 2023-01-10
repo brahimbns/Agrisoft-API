@@ -6,6 +6,7 @@ namespace App\Entity;
 use App\Repository\PriceProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PriceProductRepository::class)]
 
@@ -14,42 +15,55 @@ class PriceProduct
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["PriceProduct","Product"])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(["PriceProduct","Product"])]
     private ?float $base_price = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(["PriceProduct","Product"])]
     private ?\DateTimeInterface $date_base_price_start = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(["PriceProduct","Product"])]
     private ?\DateTimeInterface $date_base_price_end = null;
 
     #[ORM\Column]
+    #[Groups(["PriceProduct","Product"])]
     private ?float $prime_price = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(["PriceProduct","Product"])]
     private ?\DateTimeInterface $date_prime_price_start = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(["PriceProduct","Product"])]
     private ?\DateTimeInterface $date_prime_price_end = null;
 
     #[ORM\Column]
+    #[Groups(["PriceProduct","Product"])]
     private ?float $solidarity_tax = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(["PriceProduct","Product"])]
     private ?\DateTimeInterface $date_solidarity_tax_start = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(["PriceProduct","Product"])]
     private ?\DateTimeInterface $date_solidarity_tax_end = null;
 
     #[ORM\Column]
+    #[Groups(["PriceProduct","Product"])]
     private ?float $statistical_tax = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(["PriceProduct","Product"])]
     private ?\DateTimeInterface $date_statistical_tax_start = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(["PriceProduct","Product"])]
     private ?\DateTimeInterface $date_statistical_tax_end = null;
 
     public function getId(): ?int

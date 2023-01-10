@@ -59,6 +59,7 @@ class Farmer
     private ?\DateTimeImmutable $deleted_at = null;
 
     #[ORM\OneToMany(mappedBy: 'farmer_id', targetEntity: Credit::class)]
+    #[Groups(["Farmer"])]
     private Collection $credits;
 
     #[ORM\OneToMany(mappedBy: 'farmer_id', targetEntity: Reception::class)]

@@ -25,18 +25,20 @@ class UserController extends AbstractController
     private ValidatorInterface $validator;
     private UserPasswordHasherInterface $passwordHasher;
     private UrlGeneratorInterface $urlGenerator;
+    private UserManager $userManager;
 
-    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator, UserPasswordHasherInterface $passwordHasher, UrlGeneratorInterface $urlGenerator)
+    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator, UserPasswordHasherInterface $passwordHasher, UrlGeneratorInterface $urlGenerator, UserManager $userManager)
     {
         $this->em = $entityManager;
         $this->serializer = $serializer;
         $this->validator = $validator;
         $this->passwordHasher = $passwordHasher;
         $this->urlGenerator = $urlGenerator;
+        $this->userManager = $userManager;
     }
 
     #[Route('/api/user/post', 'post_user', methods: ['POST'])]
-    public function postUser(Request $request, UserManager $userManager): JsonResponse
+    public function postUser(Request $request): JsonResponse
     {
         $user = $this->serializer->deserialize($request->getContent(), User::class, 'json');
         $errors = $this->validator->validate($user);
@@ -49,7 +51,7 @@ class UserController extends AbstractController
             $user->getPassword()
         ));
 
-        $userCenter = $userManager->addUserCenter($request,$user);
+        $userCenter = $this->userManager->addUserCenter($request,$user);
 
         $this->em->persist($user);
         $this->em->persist($userCenter);
@@ -77,10 +79,11 @@ class UserController extends AbstractController
     #[Route('/api/user/show', name: 'show_all_user', methods: ['GET'])]
     public function showAllUser(UserRepository $repository): JsonResponse
     {
-        $users = $repository->findAll();
-        $jsonUsers = $this->serializer->serialize($users, 'json', ['groups' => 'User']);
-
-        return new JsonResponse($jsonUsers, Response::HTTP_OK, [], true);
+//        $users = $repository->findAll();
+//        $jsonUsers = $this->serializer->serialize($users, 'json', ['groups' => 'User']);
+//
+//        return new JsonResponse($jsonUsers, Response::HTTP_OK, [], true);
+        return $this->json($repository->findAll(),200,[],['groups' => 'User']);
     }
 
     #[Route('/api/user/edit/{id}', name: 'edit_user', methods: ['PUT'])]
@@ -91,7 +94,7 @@ class UserController extends AbstractController
         $this->em->persist($data);
         $this->em->flush();
 
-        return new Response($this->serializer->serialize($user, 'json'), Response::HTTP_OK);
+        return new Response($this->serializer->serialize($user, 'json', ['groups' => 'User']), Response::HTTP_OK);
     }
 
     #[Route('/api/user/delete/{id}', name: 'delete_user', methods: ['DELETE'])]

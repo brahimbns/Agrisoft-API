@@ -6,6 +6,7 @@ namespace App\Entity;
 use App\Repository\CreditRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CreditRepository::class)]
 
@@ -14,15 +15,19 @@ class Credit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["Credit","Farmer"])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(["Credit","Farmer"])]
     private ?float $credit_total = null;
 
     #[ORM\Column]
+    #[Groups(["Credit","Farmer"])]
     private ?float $credit_rest = null;
 
     #[ORM\Column]
+    #[Groups(["Credit","Farmer"])]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(type: Types::ARRAY)]
@@ -36,7 +41,13 @@ class Credit
 
     #[ORM\ManyToOne(inversedBy: 'credits')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["Credit"])]
     private ?Farmer $farmer_id = null;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable("now");
+    }
 
     public function getId(): ?int
     {

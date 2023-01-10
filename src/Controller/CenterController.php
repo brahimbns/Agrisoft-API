@@ -61,8 +61,8 @@ class CenterController extends AbstractController
     #[Route('/api/center/edit/{id}', name: 'edit_center', methods: ['PUT'])]
     public function editCenter(Request $request, Center $center): Response
     {
-        $data = $this->serializer->deserialize($request->getContent(), Center::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $center]);
-        $this->em->persist($data);
+        $center = $this->serializer->deserialize($request->getContent(), Center::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $center]);
+        $this->em->persist($center);
         $this->em->flush();
 
         return new Response($this->serializer->serialize($center, 'json'), Response::HTTP_OK);

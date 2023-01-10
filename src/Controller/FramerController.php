@@ -61,8 +61,8 @@ class FramerController extends AbstractController
     #[Route('/api/farmer/edit/{id}', name: 'edit_farmer', methods: ['PUT'])]
     public function editFarmer(Request $request, Farmer $farmer): Response
     {
-        $data = $this->serializer->deserialize($request->getContent(), Farmer::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $farmer]);
-        $this->em->persist($data);
+        $farmer = $this->serializer->deserialize($request->getContent(), Farmer::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $farmer]);
+        $this->em->persist($farmer);
         $this->em->flush();
 
         return new Response($this->serializer->serialize($farmer, 'json'), Response::HTTP_OK);
