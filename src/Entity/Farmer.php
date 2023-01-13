@@ -17,36 +17,37 @@ class Farmer
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["Farmer","Reception"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(["Farmer"])]
+    #[Groups(["Farmer","Reception"])]
     private ?string $code_farmer = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(["Farmer"])]
+    #[Groups(["Farmer","Reception"])]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(["Farmer"])]
+    #[Groups(["Farmer","Reception"])]
     private ?string $last_name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
-    #[Groups(["Farmer"])]
+    #[Groups(["Farmer","Reception"])]
     private ?string $bank = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
-    #[Groups(["Farmer"])]
+    #[Groups(["Farmer","Reception"])]
     private ?string $rib = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
-    #[Groups(["Farmer"])]
+    #[Groups(["Farmer","Reception"])]
     private ?string $phone = null;
 
     #[ORM\Column]

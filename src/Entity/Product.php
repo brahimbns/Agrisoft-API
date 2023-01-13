@@ -14,20 +14,20 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["Product"])]
+    #[Groups(["Product","Reception"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["Product"])]
+    #[Groups(["Product","Reception"])]
     private ?string $code_product = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["Product"])]
+    #[Groups(["Product","Reception"])]
     private ?string $label = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["Product"])]
+    #[Groups(["Product","Reception"])]
     private ?PriceProduct $price = null;
 
     #[ORM\OneToMany(mappedBy: 'product_id', targetEntity: Reception::class)]

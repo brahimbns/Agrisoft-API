@@ -15,55 +15,55 @@ class PriceProduct
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?float $base_price = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?\DateTimeInterface $date_base_price_start = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?\DateTimeInterface $date_base_price_end = null;
 
     #[ORM\Column]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?float $prime_price = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?\DateTimeInterface $date_prime_price_start = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?\DateTimeInterface $date_prime_price_end = null;
 
     #[ORM\Column]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?float $solidarity_tax = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?\DateTimeInterface $date_solidarity_tax_start = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?\DateTimeInterface $date_solidarity_tax_end = null;
 
     #[ORM\Column]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?float $statistical_tax = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?\DateTimeInterface $date_statistical_tax_start = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(["PriceProduct","Product"])]
+    #[Groups(["PriceProduct","Product","Reception"])]
     private ?\DateTimeInterface $date_statistical_tax_end = null;
 
     public function getId(): ?int

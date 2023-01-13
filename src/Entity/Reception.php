@@ -6,6 +6,8 @@ namespace App\Entity;
 use App\Repository\ReceptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReceptionRepository::class)]
 
@@ -14,34 +16,50 @@ class Reception
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["Reception"])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Groups(["Reception"])]
+    #[Assert\NotBlank]
     private ?string $receipt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(["Reception"])]
+    #[Assert\NotBlank]
     private ?int $ticket_number = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(["Reception"])]
     private ?\DateTimeInterface $date_receipt = null;
 
     #[ORM\Column]
+    #[Groups(["Reception"])]
+    #[Assert\NotBlank]
     private ?float $quantity = null;
 
     #[ORM\ManyToOne(inversedBy: 'receptions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["Reception"])]
+    #[Assert\NotBlank]
     private ?User $user_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'receptions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["Reception"])]
+    #[Assert\NotBlank]
     private ?Farmer $farmer_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'receptions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["Reception"])]
+    #[Assert\NotBlank]
     private ?Center $center_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'receptions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["Reception"])]
+    #[Assert\NotBlank]
     private ?Product $product_id = null;
 
     #[ORM\Column]
@@ -53,6 +71,11 @@ class Reception
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deleted_at = null;
 
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable("now");
+        $this->date_receipt = new \DateTimeImmutable("now");
+    }
     public function getId(): ?int
     {
         return $this->id;

@@ -17,37 +17,37 @@ class Center
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?string $code_center = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?string $label = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotBlank]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?float $capacity = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?string $governate = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?string $bank = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?string $rib = null;
 
 //    #[ORM\ManyToOne(inversedBy: 'centers')]

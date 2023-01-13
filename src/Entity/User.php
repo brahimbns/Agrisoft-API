@@ -20,17 +20,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "username no blank")]
     #[Assert\Length(min: 6)]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?string $email = null;
 
     #[ORM\Column(type: Types::JSON)]
@@ -44,11 +44,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $retypedPassword = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?string $Firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["User","Center"])]
+    #[Groups(["User","Center","Reception"])]
     private ?string $Lastname = null;
 
     #[ORM\Column(options: ['default'=>'CURRENT_TIMESTAMP'])]
